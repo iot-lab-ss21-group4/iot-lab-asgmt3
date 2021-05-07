@@ -4,6 +4,8 @@
 #include "home_wifi.h"
 #include "time_management.h"
 
+#define PUBLISHER true
+
 void run_as_publisher(void){
 	setup_transitions();
 	while (1)
@@ -43,5 +45,5 @@ void app_main(void)
 
     //TODO: MQTT events
     //TODO: can ESP be publisher and subscriber ?
-    (1 == 1) ? run_as_publisher() : run_as_subscriber();
+    (PUBLISHER) ? run_as_publisher() : run_as_subscriber();
 }

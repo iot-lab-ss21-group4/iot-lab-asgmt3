@@ -46,11 +46,6 @@ static void obtain_time(void)
     int minutes = timeinfo.tm_min;
     //Serial.println(&timeinfo, "%A, %B %d %Y %H:%M:%S");
 
-    struct timeval tv_now;
-    gettimeofday(&tv_now, NULL);
-
-    strftime(strftime_buf, sizeof(strftime_buf), "%c", &timeinfo);
-    ESP_LOGI(TAG, "The current date/time is: %s", strftime_buf);
 }
 
 void setup_sntp(){
@@ -60,4 +55,12 @@ void setup_sntp(){
     //ESP_ERROR_CHECK( esp_event_loop_create_default() );
 	initialize_sntp();
 	obtain_time();
+}
+
+struct tm read_time(){
+	time_t now;
+	struct tm timeinfo;
+	time(&now);
+	localtime_r(&now, &timeinfo);
+	return timeinfo;
 }
