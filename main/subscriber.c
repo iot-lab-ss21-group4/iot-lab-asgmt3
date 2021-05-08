@@ -1,15 +1,12 @@
 #include "common.h"
 
-void setup_subscriber(){
-	gpio_set_direction(triggerPinIn, GPIO_MODE_OUTPUT);
-	gpio_set_direction(triggerPinOut, GPIO_MODE_OUTPUT);
+void setup_subscriber()
+{
+	gpio_set_direction(TRIGGER_PIN_IN, GPIO_MODE_OUTPUT);
+	gpio_set_direction(TRIGGER_PIN_OUT, GPIO_MODE_OUTPUT);
 
-	gpio_pulldown_en(triggerPinIn);
-	gpio_pulldown_en(triggerPinOut);
+	gpio_pulldown_en(TRIGGER_PIN_IN);
+	gpio_pulldown_en(TRIGGER_PIN_OUT);
 
 	//TODO MQTT
 }
-
-
-
-

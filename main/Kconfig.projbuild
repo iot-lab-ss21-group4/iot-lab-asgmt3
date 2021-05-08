@@ -21,13 +21,14 @@ menu "Example Configuration"
             Some GPIOs are used for other purposes (flash connections, etc.) and cannot be used as input.
 
             GPIOs 35-39 are input-only so cannot be used as outputs.
-            
+
     config TRIGGER_PIN_IN
         int "Inner trigger GPIO pin"
         range 0 34
         default 23
         help
-            GPIO number (IOxx) of the inner trigger pin. This pin is triggered by a network event (e.g. MQTT) and will output signals to the inner barrier pin.
+            GPIO number (IOxx) of the inner trigger pin. This pin is triggered by a network event
+            (e.g. MQTT) and will output signals to the inner barrier pin.
 
             Some GPIOs are used for other purposes (flash connections, etc.) and cannot be used as input.
 
@@ -38,7 +39,8 @@ menu "Example Configuration"
         range 0 34
         default 18
         help
-            GPIO number (IOxx) of the outer trigger pin. This pin is triggered by a network event (e.g. MQTT) and will output signals to the outer barrier pin.
+            GPIO number (IOxx) of the outer trigger pin. This pin is triggered by a network event
+            (e.g. MQTT) and will output signals to the outer barrier pin.
 
             Some GPIOs are used for other purposes (flash connections, etc.) and cannot be used as input.
 
@@ -66,11 +68,6 @@ menu "Example Configuration"
         default "y"
         help
             This ESP publishes MQTT messages to a public broker, where subscribers can retrive them.
-            
-    config SUBSCRIBER
-        bool "ESP subscribes to topics to receive MQTT messages"
-        default "y"
-        help
-            This ESP subscribes to topics from broker to retreive MQTT messages.
+            Otherwise, this ESP subscribes to topics from broker to retreive MQTT messages.
 
 endmenu

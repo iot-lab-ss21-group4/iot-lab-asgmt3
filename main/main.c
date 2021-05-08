@@ -10,15 +10,21 @@
 void test_trigger_pins()
 {
 	enterRoom();
-	if(count == 1){
+	if (count == 1)
+	{
 		ESP_LOGI(TAG, "Test Enter Room: Ok");
-	}else {
+	}
+	else
+	{
 		ESP_LOGE(TAG, "Test Enter Room: Fail");
 	}
 	leaveRoom();
-	if(count == 0){
+	if (count == 0)
+	{
 		ESP_LOGI(TAG, "Test Leave Room: Ok");
-	}else {
+	}
+	else
+	{
 		ESP_LOGE(TAG, "Test Leave Room: Fail");
 	}
 }
@@ -34,7 +40,7 @@ void app_main(void)
 	setup_oled();
 	setup_transitions();
 
-#if SUBSCRIBER
+#if !(PUBLISHER)
 	setup_subscriber();
 	test_trigger_pins();
 #endif
