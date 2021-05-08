@@ -1,4 +1,5 @@
 #include "common.h"
+#include "commands.h"
 
 void leaveRoom()
 {

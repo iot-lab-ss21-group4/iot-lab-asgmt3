@@ -1,4 +1,5 @@
 #include "common.h"
+#include "subscriber.h"
 
 void setup_subscriber()
 {
