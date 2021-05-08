@@ -2,7 +2,7 @@
 
 const char *TAG = "ASGM3";
 volatile uint8_t count = 0;
-const uint16_t COUNT_DISPLAY_Q_SIZE = 32;
+xQueueHandle barrier_evt_q = NULL;
 xQueueHandle count_display_q = NULL;
 
 void init_logging()
@@ -13,6 +13,10 @@ void init_logging()
 
 void init_common_queues()
 {
+    if (barrier_evt_q == NULL)
+    {
+        barrier_evt_q = xQueueCreate(BARRIER_EVT_Q_SIZE, sizeof(barrier_evt_q_item));
+    }
     if (count_display_q == NULL)
     {
         count_display_q = xQueueCreate(COUNT_DISPLAY_Q_SIZE, sizeof(count_display_q_item));

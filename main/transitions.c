@@ -6,6 +6,7 @@
 #define OUTER_BARRIER_FLAG (1 << 0)
 #define INNER_BARRIER_PIN CONFIG_INNER_BARRIER_PIN
 #define OUTER_BARRIER_PIN CONFIG_OUTER_BARRIER_PIN
+#define PUBLISHER CONFIG_PUBLISHER
 #define ESP_INTR_FLAG_DEFAULT 0
 // minimum count of people in the room
 #define MIN_ROOM_COUNT 0
@@ -47,7 +48,6 @@
 #define S_IMP_1111 15
 #define S_IMP_1100 12
 
-typedef uint8_t barrier_evt_q_item;
 // assuming that FSM state is defined by 4 bits
 typedef uint8_t fsm_transition;
 STATIC_ASSERT(
@@ -55,8 +55,6 @@ STATIC_ASSERT(
     sizeof_fsm_transition_is_big_enough);
 
 static barrier_evt_q_item FSM_STATE = 0;
-static const uint16_t BARRIER_EVT_Q_SIZE = 32;
-static xQueueHandle barrier_evt_q = NULL;
 static volatile bool is_inner_rising = true;
 static volatile bool is_outer_rising = true;
 static TimerHandle_t inner_transition_timer = NULL;
@@ -165,10 +163,6 @@ static void transition_handling_task(void *_)
 }
 static void initialize_null_handles()
 {
-    if (barrier_evt_q == NULL)
-    {
-        barrier_evt_q = xQueueCreate(BARRIER_EVT_Q_SIZE, sizeof(barrier_evt_q_item));
-    }
     if (inner_transition_timer == NULL)
     {
         inner_transition_timer = xTimerCreate("inner_transition_timer", TRANSITION_TIMER_TICKS, pdFALSE, NULL, inner_transition_timer_callback);
@@ -192,9 +186,11 @@ void setup_transitions()
     gpio_set_intr_type(INNER_BARRIER_PIN, IS_RISING_EDGE_GRIO_INTR_VAL(is_inner_rising));
     gpio_set_intr_type(OUTER_BARRIER_PIN, IS_RISING_EDGE_GRIO_INTR_VAL(is_outer_rising));
 
+#if PUBLISHER
     gpio_install_isr_service(ESP_INTR_FLAG_DEFAULT);
     gpio_isr_handler_add(INNER_BARRIER_PIN, inner_barrier_pin_isr, NULL);
     gpio_isr_handler_add(OUTER_BARRIER_PIN, outer_barrier_pin_isr, NULL);
+#endif
 
     xTaskCreate(transition_handling_task, "transition_handling_task", 4096, NULL, 9, NULL);
 }

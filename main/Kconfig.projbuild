@@ -41,7 +41,7 @@ menu "Example Configuration"
 
     config PUBLISHER
         bool "ESP will publish MQTT messages to broker"
-        default true
+        default y
         help
             This ESP publishes MQTT messages to a public broker, where subscribers can retrive them.
 

@@ -40,12 +40,15 @@
 #define MAX(a, b) (((a) > (b)) ? (a) : (b))
 #define LOGICAL_NOT(c) ((c) ? false : true)
 #define STATIC_ASSERT(COND, MSG) typedef char static_assertion_##MSG[(COND) ? 1 : -1]
+#define BARRIER_EVT_Q_SIZE 32
+#define COUNT_DISPLAY_Q_SIZE 32
 
+typedef uint8_t barrier_evt_q_item;
 typedef uint8_t count_display_q_item;
 
 extern const char *TAG;
 extern volatile uint8_t count;
-extern const uint16_t COUNT_DISPLAY_Q_SIZE;
+extern xQueueHandle barrier_evt_q;
 extern xQueueHandle count_display_q;
 
 void init_logging();
