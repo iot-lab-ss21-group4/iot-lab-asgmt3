@@ -48,8 +48,6 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
 		{
 			custom_topic_handler(event->data, event->data_len);
 		}
-		ESP_LOGI(TAG, "TOPIC=%.*s", event->topic_len, event->topic);
-		ESP_LOGI(TAG, "DATA=%.*s", event->data_len, event->data);
 		break;
 	case MQTT_EVENT_ERROR:
 		ESP_LOGI(TAG, "MQTT_EVENT_ERROR");
