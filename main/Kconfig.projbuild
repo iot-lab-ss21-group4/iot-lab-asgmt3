@@ -21,28 +21,28 @@ menu "Example Configuration"
             Some GPIOs are used for other purposes (flash connections, etc.) and cannot be used as input.
 
             GPIOs 35-39 are input-only so cannot be used as outputs.
-            
-     config ESP_WIFI_SSID
-     	string "Service Set Identifier of WiFi"
-     	help
-     		Service Set Identifier (SSID) of the wireless network to which the ESP should be connected.
-     		
-     config ESP_WIFI_PASS
-     	string "Network key of the WiFi"
-     	help
-     		ESP gets access to the wireless network by providing the network key of the network.
-     		
-     config ESP_WIFI_MAXIMUM_RETRY
-     	int "Connection retries of ESP to wireless network"
-     	range 0 20
-     	default 5
-     	help
-     		Number of connection retries of the ESP.
-     		
-     config PUBLISHER
-     	bool "ESP will publish MQTT messages to broker"
-     	default true
-     	help
-     		This ESP publishes MQTT messages to a public broker, where subscribers can retrive them.
+
+    config ESP_WIFI_SSID
+        string "Service Set Identifier of WiFi"
+        help
+            Service Set Identifier (SSID) of the wireless network to which the ESP should be connected.
+
+    config ESP_WIFI_PASS
+        string "Network key of the WiFi"
+        help
+            ESP gets access to the wireless network by providing the network key of the network.
+
+    config ESP_WIFI_MAXIMUM_RETRY
+        int "Connection retries of ESP to wireless network"
+        range 0 20
+        default 5
+        help
+            Number of connection retries of the ESP.
+
+    config PUBLISHER
+        bool "ESP will publish MQTT messages to broker"
+        default true
+        help
+            This ESP publishes MQTT messages to a public broker, where subscribers can retrive them.
 
 endmenu
