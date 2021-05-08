@@ -37,12 +37,6 @@ static void event_handler(void* arg, esp_event_base_t event_base,
 void setup_wifi(){
 	s_wifi_event_group = xEventGroupCreate();
 
-	// Initialize the network interface
-	ESP_ERROR_CHECK(esp_netif_init());
-
-	// Create the system event loop which handles all events
-	ESP_ERROR_CHECK(esp_event_loop_create_default());
-
 	// Creates a station network interface object
 	esp_netif_create_default_wifi_sta();
 

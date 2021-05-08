@@ -10,15 +10,6 @@ void time_sync_notification_cb(struct timeval *tv)
     ESP_LOGI(TAG, "Notification of a time synchronization event");
 }
 
-static void initialize_sntp(void)
-{
-    sntp_setoperatingmode(SNTP_OPMODE_POLL);
-    sntp_setservername(0, SNTP_SERVER);
-    sntp_set_time_sync_notification_cb(time_sync_notification_cb);
-    sntp_set_sync_mode(SNTP_SYNC_MODE_SMOOTH);
-    sntp_init();
-}
-
 static void obtain_time(void)
 {
     int retry = 0;
@@ -56,12 +47,12 @@ bool is_time_set()
 
 void setup_sntp()
 {
-    ESP_ERROR_CHECK(nvs_flash_init());
-    ESP_ERROR_CHECK(esp_netif_init());
-    // TODO why failing?
-    //ESP_ERROR_CHECK( esp_event_loop_create_default() );
+    sntp_setoperatingmode(SNTP_OPMODE_POLL);
+    sntp_setservername(0, SNTP_SERVER);
+    sntp_set_time_sync_notification_cb(time_sync_notification_cb);
+    sntp_set_sync_mode(SNTP_SYNC_MODE_SMOOTH);
+    sntp_init();
 
-    initialize_sntp();
     if (!is_time_set())
     {
         obtain_time();
