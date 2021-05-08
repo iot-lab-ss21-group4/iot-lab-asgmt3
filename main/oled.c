@@ -23,12 +23,13 @@ static char COUNTING_BUFFER[COUNTING_BUFFER_SIZE];
 static void showRoomState();
 static void oled_update_task(void *);
 
+static struct tm current_time;
+
 static void showRoomState()
 {
     ssd1306_clearScreen();
 
     snprintf(GROUP_BUFFER, GROUP_BUFFER_SIZE, GROUP_PATTERN, IOT_LAB_COURSE_GROUP);
-    struct tm current_time = read_time();
     strftime(TIME_BUFFER, TIME_BUFFER_SIZE, TIME_PATTERN, &current_time);
     snprintf(GROUP_AND_TIME_BUFFER, GROUP_AND_TIME_BUFFER_SIZE, GROUP_AND_TIME_PATTERN, GROUP_BUFFER, TIME_BUFFER);
 
@@ -60,4 +61,10 @@ void setup_oled()
 
 void loop_oled()
 {
+	struct tm tmp_current_time = read_time();
+	if(tmp_current_time.tm_min != current_time.tm_min){
+		current_time = tmp_current_time;
+		// TODO: use different change type for queues so that the whole display does not need to be erased
+		xQueueSend(count_display_q, (const void *)&count, portMAX_DELAY);
+	}
 }
