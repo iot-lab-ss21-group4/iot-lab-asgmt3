@@ -151,14 +151,15 @@ static void transition_handling_task(void *_)
         {
         case T_0111_1110:
             count = (count < MAX_ROOM_COUNT) ? count + 1 : count;
+            xQueueSend(count_display_q, (const void *)&count, portMAX_DELAY);
             break;
         case T_1011_1101:
             count = (count > MIN_ROOM_COUNT) ? count - 1 : count;
+            xQueueSend(count_display_q, (const void *)&count, portMAX_DELAY);
             break;
         default:
             break;
         }
-        xQueueSend(count_display_q, (const void *)&count, portMAX_DELAY);
     }
 }
 static void initialize_null_handles()
