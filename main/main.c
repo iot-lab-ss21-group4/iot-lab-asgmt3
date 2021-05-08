@@ -11,7 +11,7 @@ void app_main(void)
 	init_esp_dependencies();
 
 	setup_wifi();
-	setup_sntp();
+	setup_time_management();
 	setup_oled();
 	setup_transitions();
 

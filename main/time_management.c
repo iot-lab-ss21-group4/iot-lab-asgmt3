@@ -1,11 +1,10 @@
 #include "common.h"
+#include "time_management.h"
 
 #define SNTP_SERVER "pool.ntp.org"
 #define SNTP_SYNC_RETRY 10
-// ESP time should be running in 2021
-#define ESP_EXPECTED_TIME_YEARS (2021 - 1900)
 
-void time_sync_notification_cb(struct timeval *tv)
+static void time_sync_notification_cb(struct timeval *tv)
 {
     ESP_LOGI(TAG, "Notification of a time synchronization event");
 }
@@ -14,7 +13,7 @@ static void obtain_time(void)
 {
     int retry = 0;
     const int retry_count = SNTP_SYNC_RETRY;
-    while (sntp_get_sync_status() == SNTP_SYNC_STATUS_RESET && ++retry < retry_count)
+    while (sntp_get_sync_status() == SNTP_SYNC_STATUS_RESET && retry++ < retry_count)
     {
         ESP_LOGI(TAG, "Waiting for system time to be set... (%d/%d)", retry, retry_count);
         vTaskDelay(2000 / portTICK_PERIOD_MS);
@@ -24,8 +23,10 @@ static void obtain_time(void)
         ESP_LOGE(TAG, "Could not retrieve time.!\n");
         esp_restart();
     }
-    // Set timezone to MESZ
-    setenv("TZ", "UTC-2", 1);
+    // Set timezone to Europe/Berlin:
+    // https://github.com/jdlambert/micro_tz_db/blob/98ddc684cd96727cb10213218434818474edc409/zones.c
+    // Format: https://www.gnu.org/software/libc/manual/html_node/TZ-Variable.html
+    setenv("TZ", "CET-1CEST,M3.5.0,M10.5.0/3", 1);
     tzset();
     ESP_LOGI(TAG, "System time set.");
 }
@@ -39,22 +40,13 @@ struct tm read_time()
     return timeinfo;
 }
 
-bool is_time_set()
+void setup_time_management()
 {
-    struct tm timeinfo = read_time();
-    return timeinfo.tm_year >= ESP_EXPECTED_TIME_YEARS;
-}
-
-void setup_sntp()
-{
+    ESP_LOGI(TAG, "Initializing SNTP");
     sntp_setoperatingmode(SNTP_OPMODE_POLL);
     sntp_setservername(0, SNTP_SERVER);
     sntp_set_time_sync_notification_cb(time_sync_notification_cb);
     sntp_set_sync_mode(SNTP_SYNC_MODE_SMOOTH);
     sntp_init();
-
-    if (!is_time_set())
-    {
-        obtain_time();
-    }
+    obtain_time();
 }

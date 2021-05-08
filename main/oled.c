@@ -3,7 +3,6 @@
 #include "oled.h"
 #include "time_management.h"
 
-
 #define IOT_LAB_COURSE_GROUP 4
 #define GROUP_PATTERN "G%d"
 #define TIME_PATTERN "%H:%M"
@@ -19,11 +18,10 @@ static char GROUP_BUFFER[GROUP_BUFFER_SIZE];
 static char TIME_BUFFER[TIME_BUFFER_SIZE];
 static char GROUP_AND_TIME_BUFFER[GROUP_AND_TIME_BUFFER_SIZE];
 static char COUNTING_BUFFER[COUNTING_BUFFER_SIZE];
+static struct tm current_time;
 
 static void showRoomState();
 static void oled_update_task(void *);
-
-static struct tm current_time;
 
 static void showRoomState()
 {
@@ -61,10 +59,11 @@ void setup_oled()
 
 void loop_oled()
 {
-	struct tm tmp_current_time = read_time();
-	if(tmp_current_time.tm_min != current_time.tm_min){
-		current_time = tmp_current_time;
-		// TODO: use different change type for queues so that the whole display does not need to be erased
-		xQueueSend(count_display_q, (const void *)&count, portMAX_DELAY);
-	}
+    struct tm tmp_current_time = read_time();
+    if (tmp_current_time.tm_min != current_time.tm_min)
+    {
+        current_time = tmp_current_time;
+        // TODO: use different change type for queues so that the whole display does not need to be erased
+        xQueueSend(count_display_q, (const void *)&count, portMAX_DELAY);
+    }
 }
