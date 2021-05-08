@@ -53,5 +53,6 @@ extern xQueueHandle count_display_q;
 
 void init_logging();
 void init_common_queues();
+void init_esp_dependencies();
 
 #endif
