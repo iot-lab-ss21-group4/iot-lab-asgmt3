@@ -43,6 +43,10 @@
 #define BARRIER_EVT_Q_SIZE 32
 #define COUNT_DISPLAY_Q_SIZE 32
 
+#define triggerPinIn CONFIG_TRIGGER_PIN_IN
+#define triggerPinOut CONFIG_TRIGGER_PIN_OUT
+#define SUBSCRIBER CONFIG_SUBSCRIBER
+
 typedef uint8_t barrier_evt_q_item;
 typedef uint8_t count_display_q_item;
 
