@@ -5,13 +5,19 @@
 
 
 #define IOT_LAB_COURSE_GROUP 4
-#define GROUP_AND_TIME_PATTERN "G%d  %d:%d"
-#define COUNTING_PATTERN "%d%d"
+#define GROUP_PATTERN "G%d"
+#define TIME_PATTERN "%H:%M"
+#define GROUP_AND_TIME_PATTERN "%s  %s"
+#define COUNTING_PATTERN "%d %d"
 
-#define GROUP_AND_TIME_BUFFER_SIZE 20
+#define GROUP_BUFFER_SIZE 3
+#define TIME_BUFFER_SIZE 6
+#define GROUP_AND_TIME_BUFFER_SIZE (GROUP_BUFFER_SIZE + 2 + TIME_BUFFER_SIZE)
+#define COUNTING_BUFFER_SIZE 9
+
+static char GROUP_BUFFER[GROUP_BUFFER_SIZE];
+static char TIME_BUFFER[TIME_BUFFER_SIZE];
 static char GROUP_AND_TIME_BUFFER[GROUP_AND_TIME_BUFFER_SIZE];
-
-#define COUNTING_BUFFER_SIZE 20
 static char COUNTING_BUFFER[COUNTING_BUFFER_SIZE];
 
 static void showRoomState();
@@ -20,9 +26,17 @@ static void oled_update_task(void *);
 static void showRoomState()
 {
     ssd1306_clearScreen();
+
+    snprintf(GROUP_BUFFER, GROUP_BUFFER_SIZE, GROUP_PATTERN, IOT_LAB_COURSE_GROUP);
     struct tm current_time = read_time();
-    snprintf(GROUP_AND_TIME_BUFFER, GROUP_AND_TIME_BUFFER_SIZE, GROUP_AND_TIME_PATTERN, IOT_LAB_COURSE_GROUP, current_time.tm_hour, current_time.tm_min);
+    strftime(TIME_BUFFER, TIME_BUFFER_SIZE, TIME_PATTERN, &current_time);
+    snprintf(GROUP_AND_TIME_BUFFER, GROUP_AND_TIME_BUFFER_SIZE, GROUP_AND_TIME_PATTERN, GROUP_BUFFER, TIME_BUFFER);
+
+    // TODO: why in the slides 00  00 ?? One counter for the esp and one for the counter of another ESP ?
+    snprintf(COUNTING_BUFFER, COUNTING_BUFFER_SIZE, COUNTING_PATTERN, count, 0);
+
     ssd1306_printFixedN(0, 0, GROUP_AND_TIME_BUFFER, STYLE_NORMAL, 1);
+    ssd1306_printFixedN(0, 24, COUNTING_BUFFER, STYLE_NORMAL, 2);
 }
 
 static void oled_update_task(void *_)
