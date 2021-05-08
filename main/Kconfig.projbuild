@@ -70,4 +70,13 @@ menu "Example Configuration"
             This ESP publishes MQTT messages to a public broker, where subscribers can retrive them.
             Otherwise, this ESP subscribes to topics from broker to retreive MQTT messages.
 
+    config BROKER_URI
+        string "URI of the MQTT broker"
+        default "mqtt://test.mosquitto.org:1883"
+        help
+            Full URI of the MQTT broker to subscribe for room entrance simulation data.
+
+            See the following webpage for further formatting details:
+            https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/protocols/mqtt.html#uri
+
 endmenu

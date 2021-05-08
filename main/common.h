@@ -29,6 +29,11 @@
 #include "lwip/netdb.h"
 #include "lwip/sys.h"
 
+#define TRIGGER_PIN_IN CONFIG_TRIGGER_PIN_IN
+#define TRIGGER_PIN_OUT CONFIG_TRIGGER_PIN_OUT
+#define PUBLISHER CONFIG_PUBLISHER
+#define BARRIER_EVT_Q_SIZE 32
+#define COUNT_DISPLAY_Q_SIZE 32
 #define BYTE_TO_BINARY_PATTERN "%c%c%c%c%c%c%c%c"
 #define BYTE_TO_BINARY(byte)       \
     ((byte)&0x80 ? '1' : '0'),     \
@@ -44,12 +49,6 @@
 #define MAX(a, b) (((a) > (b)) ? (a) : (b))
 #define LOGICAL_NOT(c) ((c) ? false : true)
 #define STATIC_ASSERT(COND, MSG) typedef char static_assertion_##MSG[(COND) ? 1 : -1]
-#define BARRIER_EVT_Q_SIZE 32
-#define COUNT_DISPLAY_Q_SIZE 32
-
-#define TRIGGER_PIN_IN CONFIG_TRIGGER_PIN_IN
-#define TRIGGER_PIN_OUT CONFIG_TRIGGER_PIN_OUT
-#define PUBLISHER CONFIG_PUBLISHER
 
 typedef uint8_t barrier_evt_q_item;
 typedef uint8_t count_display_q_item;
