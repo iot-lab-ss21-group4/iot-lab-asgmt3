@@ -186,11 +186,9 @@ void setup_transitions()
     gpio_set_intr_type(INNER_BARRIER_PIN, IS_RISING_EDGE_GRIO_INTR_VAL(is_inner_rising));
     gpio_set_intr_type(OUTER_BARRIER_PIN, IS_RISING_EDGE_GRIO_INTR_VAL(is_outer_rising));
 
-#if PUBLISHER
     gpio_install_isr_service(ESP_INTR_FLAG_DEFAULT);
     gpio_isr_handler_add(INNER_BARRIER_PIN, inner_barrier_pin_isr, NULL);
     gpio_isr_handler_add(OUTER_BARRIER_PIN, outer_barrier_pin_isr, NULL);
-#endif
 
     xTaskCreate(transition_handling_task, "transition_handling_task", 4096, NULL, 9, NULL);
 }
