@@ -29,6 +29,8 @@
 #include "lwip/netdb.h"
 #include "lwip/sys.h"
 
+#define INNER_BARRIER_PIN CONFIG_INNER_BARRIER_PIN
+#define OUTER_BARRIER_PIN CONFIG_OUTER_BARRIER_PIN
 #define TRIGGER_PIN_IN CONFIG_TRIGGER_PIN_IN
 #define TRIGGER_PIN_OUT CONFIG_TRIGGER_PIN_OUT
 #define PUBLISHER CONFIG_PUBLISHER
@@ -57,6 +59,8 @@ extern const char *TAG;
 extern volatile uint8_t count;
 extern xQueueHandle barrier_evt_q;
 extern xQueueHandle count_display_q;
+extern volatile bool in_testing_scenario;
+
 
 void init_logging();
 void init_common_queues();

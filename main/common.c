@@ -4,6 +4,7 @@ const char *TAG = "ASGM3";
 volatile uint8_t count = 0;
 xQueueHandle barrier_evt_q = NULL;
 xQueueHandle count_display_q = NULL;
+volatile bool in_testing_scenario = false;
 
 void init_logging()
 {
