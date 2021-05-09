@@ -11,6 +11,8 @@ static int expected_room_count = 0;
 #define TEST_HALFWAY_LEAVE_ROOM halfwayLeave(), assert_room_count(expected_room_count, "Test Halfway Leave Room");
 #define TEST_HALFWAY_ENTER_ROOM halfwayEnter(), assert_room_count(expected_room_count, "Test Halfway Enter Room");
 #define TEST_MANIPULATION_ENTER_ROOM manipulationEnter(), assert_room_count(expected_room_count, "Test Manipulation Enter Room");
+#define TEST_ALMOST_ENTER_ROOM almostEnterRoom(), assert_room_count(expected_room_count, "Test Almost Enter Room");
+#define TEST_ALMOST_LEAVE_ROOM almostLeaveRoom(), assert_room_count(expected_room_count, "Test Almost Leave Room");
 
 //////COMMANDS//////
 
@@ -37,6 +39,42 @@ void leaveRoom()
 	gpio_set_level(TRIGGER_PIN_IN, 0);
 	vTaskDelay(200 / portTICK_RATE_MS);
 	gpio_set_level(TRIGGER_PIN_OUT, 0);
+	vTaskDelay(200 / portTICK_RATE_MS);
+}
+
+void almostEnterRoom()
+{
+	ESP_LOGI(TAG, "Command: Almost enter");
+	gpio_set_level(TRIGGER_PIN_OUT, 1);
+	vTaskDelay(200 / portTICK_RATE_MS);
+	gpio_set_level(TRIGGER_PIN_IN, 1);
+	vTaskDelay(200 / portTICK_RATE_MS);
+	gpio_set_level(TRIGGER_PIN_OUT, 0);
+	vTaskDelay(200 / portTICK_RATE_MS);
+
+	gpio_set_level(TRIGGER_PIN_OUT, 1);
+	vTaskDelay(200 / portTICK_RATE_MS);
+	gpio_set_level(TRIGGER_PIN_IN, 0);
+	vTaskDelay(200 / portTICK_RATE_MS);
+	gpio_set_level(TRIGGER_PIN_OUT, 0);
+	vTaskDelay(200 / portTICK_RATE_MS);
+}
+
+void almostLeaveRoom()
+{
+	ESP_LOGI(TAG, "Command: Almost leave");
+	gpio_set_level(TRIGGER_PIN_IN, 1);
+	vTaskDelay(200 / portTICK_RATE_MS);
+	gpio_set_level(TRIGGER_PIN_OUT, 1);
+	vTaskDelay(200 / portTICK_RATE_MS);
+	gpio_set_level(TRIGGER_PIN_IN, 0);
+	vTaskDelay(200 / portTICK_RATE_MS);
+
+	gpio_set_level(TRIGGER_PIN_IN, 1);
+	vTaskDelay(200 / portTICK_RATE_MS);
+	gpio_set_level(TRIGGER_PIN_OUT, 0);
+	vTaskDelay(200 / portTICK_RATE_MS);
+	gpio_set_level(TRIGGER_PIN_IN, 0);
 	vTaskDelay(200 / portTICK_RATE_MS);
 }
 
@@ -138,9 +176,13 @@ void test_trigger_pins()
 
 	TEST_PEAK_OUT_ROOM;
 
+	TEST_ALMOST_LEAVE_ROOM;
+
 	TEST_LEAVE_ROOM;
 
 	TEST_PEAK_IN_ROOM;
+
+	TEST_ALMOST_ENTER_ROOM;
 
 	TEST_HALFWAY_LEAVE_ROOM;
 
