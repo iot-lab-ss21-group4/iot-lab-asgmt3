@@ -5,10 +5,6 @@
 #define INNER_BARRIER_FLAG (1 << 1)
 #define OUTER_BARRIER_FLAG (1 << 0)
 #define ESP_INTR_FLAG_DEFAULT 0
-// minimum count of people in the room
-#define MIN_ROOM_COUNT 0
-// assuming that count_display_q_item is an unsigned type
-#define MAX_ROOM_COUNT ((count_display_q_item)(-1))
 #define TRANSITION_TIMER_MS 10
 #define TRANSITION_TIMER_TICKS MAX(TRANSITION_TIMER_MS / portTICK_PERIOD_MS, 1)
 #define IS_RISING_EDGE_GRIO_INTR_VAL(is_rising) ((is_rising) ? GPIO_INTR_POSEDGE : GPIO_INTR_NEGEDGE)
@@ -157,7 +153,8 @@ static void transition_handling_task(void *_)
         default:
             break;
         }
-        if(in_testing_scenario) print_sensor_and_fsm_state();
+        if (in_testing_scenario)
+            print_sensor_and_fsm_state();
     }
 }
 static void initialize_null_handles()
@@ -194,12 +191,13 @@ void setup_transitions()
 
 void loop_transitions()
 {
-	print_sensor_and_fsm_state();
+    print_sensor_and_fsm_state();
 }
 
-void print_sensor_and_fsm_state(){
-	ESP_LOGI(TAG, "Sensor state: " BYTE_TO_BINARY_PATTERN ", FSM state: " BYTE_TO_BINARY_PATTERN,
-	             BYTE_TO_BINARY((gpio_get_level(INNER_BARRIER_PIN) * INNER_BARRIER_FLAG) |
-	                            (gpio_get_level(OUTER_BARRIER_PIN) * OUTER_BARRIER_FLAG)),
-	             BYTE_TO_BINARY(FSM_STATE));
+void print_sensor_and_fsm_state()
+{
+    ESP_LOGI(TAG, "Sensor state: " BYTE_TO_BINARY_PATTERN ", FSM state: " BYTE_TO_BINARY_PATTERN,
+             BYTE_TO_BINARY((gpio_get_level(INNER_BARRIER_PIN) * INNER_BARRIER_FLAG) |
+                            (gpio_get_level(OUTER_BARRIER_PIN) * OUTER_BARRIER_FLAG)),
+             BYTE_TO_BINARY(FSM_STATE));
 }

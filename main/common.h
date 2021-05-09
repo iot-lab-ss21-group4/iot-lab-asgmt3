@@ -36,6 +36,10 @@
 #define PUBLISHER CONFIG_PUBLISHER
 #define BARRIER_EVT_Q_SIZE 32
 #define COUNT_DISPLAY_Q_SIZE 32
+// minimum count of people in the room
+#define MIN_ROOM_COUNT 0
+// assuming that count_display_q_item is an unsigned type
+#define MAX_ROOM_COUNT ((count_display_q_item)(-1))
 #define BYTE_TO_BINARY_PATTERN "%c%c%c%c%c%c%c%c"
 #define BYTE_TO_BINARY(byte)       \
     ((byte)&0x80 ? '1' : '0'),     \
@@ -60,7 +64,6 @@ extern volatile uint8_t count;
 extern xQueueHandle barrier_evt_q;
 extern xQueueHandle count_display_q;
 extern volatile bool in_testing_scenario;
-
 
 void init_logging();
 void init_common_queues();
